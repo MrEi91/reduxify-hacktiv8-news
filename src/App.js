@@ -1,58 +1,24 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom'
+import { connect } from 'react-redux'
+
 import logo from './logo.svg';
 import './App.css';
 import News from './components/News'
 import Search from './components/Search'
-import {Link} from 'react-router-dom'
-
-const data = [
-  {
-    title: 'React',
-    url: 'https://facebook.github.io/react/',
-    author: 'Jordan Walke',
-    num_comments: 3,
-    points: 4,
-    objectID: 0
-  }, {
-    title: 'Redux',
-    url: 'https://github.com/reactjs/redux/',
-    author: 'Dan Abramov, Andrew Clark',
-    num_comments: 2,
-    points: 5,
-    objectID: 1
-  }
-]
+import { dispatchNews } from './actions'
 
 class App extends Component {
-	constructor(){
-		super()
-		this.state = {
-			data : data,
-			listNews:[],
-      Peoples : []
-		}
-	}
-
 	componentDidMount(){
-		const self = this
 		fetch('https://hn.algolia.com/api/v1/search?query=redux')
 			.then((response, err) => {
 				if (err) throw err
 				return response.json()
 			})
 			.then(data => {
-				self.setState({
-				listNews : data.hits
-				})
+        this.props.loadNews(data.hits)
 			})
 	}
-
-	searchNews(event){
-		this.setState({
-			keyWord:event.target.value
-		})
-	}
-
   render() {
     return (
       <div className="App">
@@ -69,11 +35,19 @@ class App extends Component {
           <Link to="/People">Peoples</Link>
         </nav>
 
-				<Search handleChange={this.searchNews.bind(this)}/>
-				<News handleKeyword={this.state.keyWord} data={this.state.listNews}/>
+				<Search />
+				<News />
       </div>
     );
   }
 }
 
-export default App
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loadNews : (data) => {
+      dispatch(dispatchNews(data))
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App)
