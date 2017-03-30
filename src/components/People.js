@@ -1,8 +1,9 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+
 import logo from '../logo.svg';
 import '../App.css';
 import PeopleList from './PeopleList'
-import {Link} from 'react-router-dom'
 
 class People extends Component {
   constructor(props) {
@@ -10,20 +11,6 @@ class People extends Component {
     this.state = {
       peoples:[]
     }
-  }
-
-  componentDidMount(){
-    const self = this
-    fetch('https://swapi.co/api/people/')
-      .then((response, err) => {
-        if (err) throw err
-        return response.json()
-      })
-      .then(data => {
-        self.setState({
-          peoples: data.results
-        })
-      })
   }
 
   render(){
@@ -39,10 +26,10 @@ class People extends Component {
 
         <nav>
           <Link to="/News">News</Link>&nbsp;&nbsp;
-          <Link to="/People">Peoples</Link>
+          <Link to="/People">People</Link>
         </nav>
 
-        <PeopleList peoples={this.state.peoples} />
+        <PeopleList />
       </div>
     )
   }
