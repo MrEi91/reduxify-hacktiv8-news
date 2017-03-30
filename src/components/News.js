@@ -1,13 +1,11 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 const News = (props) =>{
   return(
     <div className="example">
       <ul>
-        {props.data.filter((item, index)=>{
-          let patternFilter = new RegExp(props.handleKeyword,'gi')
-          return patternFilter.test(item.title)
-        }).map((item, index)=>{
+        {props.news.map((item, index)=>{
           return(
             <li key={index}><a href={item.url} target="_blank">{item.title}</a></li>
           )
@@ -17,4 +15,10 @@ const News = (props) =>{
   )
 }
 
-export default News
+const mapStateToProps = (state) => {
+  return {
+    news : state.news.filterNews
+  }
+}
+
+export default connect(mapStateToProps, null)(News)
