@@ -1,18 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
-import People from './components/People'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 import {
   BrowserRouter as Router,
   Route
 }from 'react-router-dom'
-import { createStore } from 'redux'
 
-const store = createStore(reducer)
+
+import App from './App';
+import './index.css';
+import People from './components/People'
+import reducers  from './reducers'
+
+const store = createStore(reducers)
 
 ReactDOM.render(
-  <Provider>
+  <Provider store={store}>
     <Router>
       <div>
         <Route exact path="/" component={App} />
